@@ -1,7 +1,7 @@
 import java.util.*;
 
 // Graph structure logic class
- public class Graph {
+public class Graph {
     // Adjacency list to store nodes and their connections
     private final Map<String, Set<String>> adjList;
 
@@ -12,12 +12,19 @@ import java.util.*;
 
     // Add a node to the graph if it doesn't already exist
     public void addNode(String node) {
-        adjList.putIfAbsent(node, new HashSet<>());
+        if (node == null || node.trim().isEmpty()) {
+            System.out.println("Invalid node name.");
+            return;
+        }
+        adjList.putIfAbsent(node.trim(), new HashSet<>());
     }
 
     // Remove a node and all edges connected to it
     public void removeNode(String node) {
-        if (!adjList.containsKey(node)) return;
+        if (!adjList.containsKey(node)) {
+            System.out.println("Node does not exist.");
+            return;
+        }
         adjList.remove(node);
         for (Set<String> neighbors : adjList.values()) {
             neighbors.remove(node);
@@ -26,20 +33,47 @@ import java.util.*;
 
     // Add an undirected edge between two existing nodes
     public void addEdge(String from, String to) {
-        if (!adjList.containsKey(from) || !adjList.containsKey(to)) return;
+        if (from == null || to == null || from.equals(to)) {
+            System.out.println("Invalid edge.");
+            return;
+        }
+        if (!adjList.containsKey(from) || !adjList.containsKey(to)) {
+            System.out.println("One or both nodes do not exist.");
+            return;
+        }
         adjList.get(from).add(to);
         adjList.get(to).add(from);
     }
 
     // Remove an edge between two nodes if it exists
     public void removeEdge(String from, String to) {
-        if (adjList.containsKey(from)) adjList.get(from).remove(to);
-        if (adjList.containsKey(to)) adjList.get(to).remove(from);
+        if (!adjList.containsKey(from) || !adjList.containsKey(to)) {
+            System.out.println("One or both nodes do not exist.");
+            return;
+        }
+        adjList.get(from).remove(to);
+        adjList.get(to).remove(from);
     }
 
     // Return the neighbors of a given node
     public Set<String> getNode(String node) {
-        return adjList.get(node);
+        return adjList.getOrDefault(node, Collections.emptySet());
+    }
+
+    // Check if a node exists in the graph
+    public boolean hasNode(String node) {
+        return adjList.containsKey(node);
+    }
+
+    // Return all nodes in the graph
+    public Set<String> getAllNodes() {
+        return adjList.keySet();
+    }
+
+    // Check if two nodes are directly connected
+    public boolean isConnected(String from, String to) {
+        if (!adjList.containsKey(from)) return false;
+        return adjList.get(from).contains(to);
     }
 
     // Return a string representation of the graph structure
@@ -52,7 +86,7 @@ import java.util.*;
         return sb.toString();
     }
 
-    // Main method for simple testing without GUI
+    // main method for testing only can be removed or ignored for GUI/BFS integration
     public static void main(String[] args) {
         Graph g = new Graph();
 
@@ -60,18 +94,28 @@ import java.util.*;
         g.addNode("A");
         g.addNode("B");
         g.addNode("C");
+        g.addNode(""); // Invalid node
+        g.addNode(null); // Invalid node
 
         // Sample edges
         g.addEdge("A", "B");
         g.addEdge("A", "C");
+        g.addEdge("A", "A"); // Invalid edge
+        g.addEdge("A", "Z"); // Invalid edge (Z doesn't exist)
 
         // Display current graph
         System.out.println("Graph structure:");
         System.out.println(g);
 
+        // Utility checks
+        System.out.println("Contains node 'B'? " + g.hasNode("B"));
+        System.out.println("All nodes: " + g.getAllNodes());
+        System.out.println("A connected to B? " + g.isConnected("A", "B"));
+
         // Remove edge and node
         g.removeEdge("A", "B");
         g.removeNode("C");
+        g.removeNode("Z"); // Invalid remove
 
         // Display updated graph
         System.out.println("\nUpdated graph:");
