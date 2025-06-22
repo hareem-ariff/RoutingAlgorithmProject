@@ -85,8 +85,9 @@ public class Graph {
         }
         return sb.toString();
     }
-
+}
     // main method for testing only can be removed or ignored for GUI/BFS integration
+    /*
     public static void main(String[] args) {
         Graph g = new Graph();
 
@@ -122,3 +123,4 @@ public class Graph {
         System.out.println(g);
     }
 }
+*/
