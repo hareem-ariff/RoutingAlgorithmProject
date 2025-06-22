@@ -1,53 +1,53 @@
 import java.util.*;
 
 public class BFSRouter {
-    private final Graph graph;                 // Saves the graph on which this class will work
-    private final List<String> logs;           // list for storing logs
+    private final Graph graph;                   // Graph reference
+    private final List<String> logs;             // Logs of each step
+    private final List<String> visitedOrder;     // Nodes visited in order (for GUI use)
 
-    // Constructor for initializing graph and preparing log list
+    // Constructor
     public BFSRouter(Graph graph) {
         this.graph = graph;
         this.logs = new ArrayList<>();
+        this.visitedOrder = new ArrayList<>();
     }
-    // To find shortest path from source to destination node
-    public List<String> findShortestPath(String source, String destination) {
-        logs.clear();  // Clear any previous log entries
 
-        // Check if source and destination exist in the graph
+    // BFS traversal to find shortest path between source and destination
+    public List<String> runBFS(String source, String destination) {
+        logs.clear();         // Clear previous run logs
+        visitedOrder.clear(); // Clear visited history
+        // if source and destination is missing gives log error
         if (!graph.hasNode(source) || !graph.hasNode(destination)) {
             logs.add("Invalid source or destination node.");
             return null;
         }
-
-        // If source and destination are the same, return immediately
+        // When both nodes are same
         if (source.equals(destination)) {
             logs.add("Source and destination are the same.");
+            visitedOrder.add(source);
             return List.of(source);
         }
 
-        // Prepare for BFS traversal
-        logs.add("Starting BFS from: " + source);// Start BFS from source node
-        Queue<String> queue = new LinkedList<>();// Creates a queue to follow BFS rule
-        Set<String> visited = new HashSet<>();// Keeps track of all the visited nodes
-        Map<String, String> parent = new HashMap<>();  // Tracks the path back from destination
-
-        queue.offer(source);      // Start from the source node
-        visited.add(source);      // Mark the source as visited
-
-        // Loops runs as long as there are nodes to explore
+        logs.add("Starting BFS from: " + source);
+        Queue<String> queue = new LinkedList<>();// for BFS traversal
+        Set<String> visited = new HashSet<>();// to avoid revisiting nodes
+        Map<String, String> parent = new HashMap<>();// to reconstruct the path later
+        // Starts BFS
+        queue.offer(source);
+        visited.add(source);
+        // when queue is not empty
         while (!queue.isEmpty()) {
-            String current = queue.poll();// Takes first node and calls it current
-            logs.add("Visiting: " + current);// logs that now we are visiting this node
+            String current = queue.poll();// takes first node to visit
+            logs.add("Visiting: " + current);// logs records that currently visiting node
+            visitedOrder.add(current);// saves the order
 
-            // Gets all neighbours of the current node
-            for (String neighbor : graph.getNode(current)) {
-                if (!visited.contains(neighbor)) {// if neighbour is not visited, explore it
-                    queue.offer(neighbor);             // Add neighbor to the queue
-                    visited.add(neighbor);             // Mark neighbor as visited
-                    parent.put(neighbor, current);     // Track parent for path reconstruction
-                    logs.add("Queueing: " + neighbor);
+            for (String neighbor : graph.getNeighbors(current)) {// checks each neighbour connected to the node
+                if (!visited.contains(neighbor)) {// visit neighbour
+                    queue.offer(neighbor);// add neighbour to the queue
+                    visited.add(neighbor);// marks neighbour as visited
+                    parent.put(neighbor, current);// records that neighbour was visited for building path later
+                    logs.add("Queueing: " + neighbor);// logs that added neighbour to queue
 
-                    // If destination is found, stop early
                     if (neighbor.equals(destination)) {
                         logs.add("Destination reached: " + destination);
                         break;
@@ -56,23 +56,28 @@ public class BFSRouter {
             }
         }
 
-        // If destination was not in parent map give no path exists
         if (!parent.containsKey(destination)) {
             logs.add("No path found from " + source + " to " + destination);
             return null;
         }
 
-        List<String> path = new ArrayList<>();// Creates an empty list to store final shortest path
-        for (String at = destination; at != null; at = parent.get(at)) {// Builds the path in reverse
+        List<String> path = new ArrayList<>();// creates empty list path
+        for (String at = destination; at != null; at = parent.get(at)) {// adds each node to the path
             path.add(at);
         }
-        Collections.reverse(path);  // to built path backwards
-        logs.add("Shortest path: " + path);// log the final path
+        Collections.reverse(path);
+        logs.add("Shortest path: " + path);
 
-        return path;//returns the final list of path
+        return path;
     }
-    // To return list of logs collected
+
+    // Returns the traversal log
     public List<String> getLogs() {
         return logs;
+    }
+
+    // Returns the order in which nodes were visited (for animation or step-by-step visualization)
+    public List<String> getVisitedOrder() {
+        return visitedOrder;
     }
 }
