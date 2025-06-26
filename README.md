@@ -8,9 +8,7 @@ A modern, interactive JavaFX application to visualize Breadth-First Search (BFS)
 - **Add/Remove Nodes and Edges**: Build your own graph visually.
 - **BFS Traversal Animation**: Watch BFS in action, step by step.
 - **Shortest Path Highlighting**: Only the shortest path remains highlighted at the end.
-- **Modern Dark UI**: Beautiful, minimal, and accessible interface.
 - **Keyboard Shortcuts**: Press Enter to quickly add nodes/edges.
-- **Responsive Layout**: Left panel for controls/log, right for graph.
 
 ---
 
@@ -19,10 +17,8 @@ A modern, interactive JavaFX application to visualize Breadth-First Search (BFS)
 ![GUI](assets/GUI.png)
 
 ### 2. BFS Traversal
-![Traversal](assets/BFSTraversal.png)
 
 ### 3. Result Log
-![Result](assets/Result.png)
 
 ## Getting Started
 
@@ -63,11 +59,4 @@ A modern, interactive JavaFX application to visualize Breadth-First Search (BFS)
 - **Run BFS:** Select source and destination, click Run BFS.
 - **Logs:** See traversal and queue details in the log panel.
 
-
----
-
-## Credits
-- **Developed by:** Hareem Arif
-- **UI/UX:** Inspired by modern minimal dark themes.
-- **Powered by:** JavaFX, Maven
 
