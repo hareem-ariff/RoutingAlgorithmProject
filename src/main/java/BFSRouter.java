@@ -38,37 +38,41 @@ public class BFSRouter {
         // when queue is not empty
         while (!queue.isEmpty()) {
             String current = queue.poll();// takes first node to visit
+            logs.add("Dequeued: " + current);
+            logs.add("");
             logs.add("Visiting: " + current);// logs records that currently visiting node
             visitedOrder.add(current);// saves the order
 
+            if (current.equals(destination)) {
+                logs.add("");
+                logs.add("Destination reached: " + destination);
+                logs.add("");
+                // Reconstruct path
+                List<String> path = new ArrayList<>();
+                for (String at = destination; at != null; at = parent.get(at)) {
+                    path.add(at);
+                }
+                Collections.reverse(path);
+                logs.add("Shortest path: " + path);
+                return path;
+            }
+
+            List<String> queuedNeighbors = new ArrayList<>();
             for (String neighbor : graph.getNeighbors(current)) {// checks each neighbour connected to the node
                 if (!visited.contains(neighbor)) {// visit neighbour
                     queue.offer(neighbor);// add neighbour to the queue
                     visited.add(neighbor);// marks neighbour as visited
                     parent.put(neighbor, current);// records that neighbour was visited for building path later
-                    logs.add("Queueing: " + neighbor);// logs that added neighbour to queue
-
-                    if (neighbor.equals(destination)) {
-                        logs.add("Destination reached: " + destination);
-                        break;
-                    }
+                    queuedNeighbors.add(neighbor);
                 }
             }
+            if (!queuedNeighbors.isEmpty()) {
+                logs.add("Queueing: " + String.join(", ", queuedNeighbors));
+                logs.add("");
+            }
         }
-
-        if (!parent.containsKey(destination)) {
-            logs.add("No path found from " + source + " to " + destination);
-            return null;
-        }
-
-        List<String> path = new ArrayList<>();// creates empty list path
-        for (String at = destination; at != null; at = parent.get(at)) {// adds each node to the path
-            path.add(at);
-        }
-        Collections.reverse(path);
-        logs.add("Shortest path: " + path);
-
-        return path;
+        logs.add("No path found from " + source + " to " + destination);
+        return null;
     }
 
     // Returns the traversal log
