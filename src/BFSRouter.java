@@ -1,12 +1,14 @@
+import main.Graph.graph;
+
 import java.util.*;
 
 public class BFSRouter {
-    private final Graph graph;                   // Graph reference
+    private final graph.Graph graph;                   // main.Graph reference
     private final List<String> logs;             // Logs of each step
     private final List<String> visitedOrder;     // Nodes visited in order (for GUI use)
 
     // Constructor
-    public BFSRouter(Graph graph) {
+    public BFSRouter(graph.Graph graph) {
         this.graph = graph;
         this.logs = new ArrayList<>();
         this.visitedOrder = new ArrayList<>();
