@@ -10,12 +10,22 @@ A modern, interactive JavaFX application to visualize Breadth-First Search (BFS)
 - **Shortest Path Highlighting**: Only the shortest path remains highlighted at the end.
 - **Modern Dark UI**: Beautiful, minimal, and accessible interface.
 - **Keyboard Shortcuts**: Press Enter to quickly add nodes/edges.
+- **Responsive Layout**: Adapts smoothly to different window sizes and resolutions.
 
 ---
 
 ## Screenshots
 ### 1. Full GUI Interface
 ![GUI](assets/GUI.png)
+
+### 2. Graph Layout with Selected Source and Destination
+![Graph Layout](assets/Layout.jpeg)
+
+### 3. BFS Traversal in Progress
+![Traversal Progress](assets/Traversal.jpeg)
+
+### 4. Complete Traversal with Highlighted Shortest Path
+![Shortest Path Found](assets/ShortestPath.jpeg)
 
 
 ## Getting Started

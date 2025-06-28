@@ -5,6 +5,7 @@
     -fx-font-size: 16px;
 }
 
+/* Container layout styling for vertical and horizontal boxes */
 .vbox, .hbox {
     -fx-background-color: #23272e;
     -fx-background-radius: 18;
@@ -20,6 +21,7 @@
     -fx-padding: 0;
 }
 
+/* Left pane settings */
 #leftPane {
     -fx-background-color: #23272e;
     -fx-background-radius: 24;
@@ -32,11 +34,13 @@
     -fx-alignment: top_center;
 }
 
+/* Control box inside left pane */
 #controlsBox {
     -fx-spacing: 28;
     -fx-alignment: top_center;
 }
 
+/* Log section styling */
 #logBox {
     -fx-background-color: #18181b;
     -fx-background-radius: 18;
@@ -50,12 +54,14 @@
     -fx-max-height: 320;
 }
 
+/* BFS queue chip container */
 #bfsQueueBox {
     -fx-spacing: 8;
     -fx-padding: 0 0 12 0;
     -fx-alignment: center_left;
 }
 
+/* BFS queue visual chip style */
 .bfs-queue-chip {
     -fx-background-color: #23272e;
     -fx-border-color: #bd976d;
@@ -67,6 +73,7 @@
     -fx-font-weight: 600;
 }
 
+/* Default button styling */
 .button {
     -fx-background-color: #ffe7b2;
     -fx-text-fill: #23272e;
@@ -84,6 +91,8 @@
     -fx-transition: all 0.2s;
     -fx-letter-spacing: 1px;
 }
+
+/* Button hover effects */
 .button:hover {
     -fx-background-color: #ffd580;
     -fx-text-fill: #23272e;
@@ -93,6 +102,7 @@
     -fx-scale-y: 1.07;
 }
 
+/* Special styling for the "Run BFS" button */
 #runBFSBtn {
     -fx-background-color: linear-gradient(to right, #ffe7b2, #bd976d 80%);
     -fx-text-fill: #18181b;
@@ -101,6 +111,8 @@
     -fx-background-radius: 18;
     -fx-font-size: 16px;
     -fx-font-weight: 800;
+    -fx-min-width: 120px;
+    -fx-min-height: 40px;
     -fx-padding: 10 36 10 36;
     -fx-effect: dropshadow(gaussian, #bd976d, 0, 0, 0, 0);
     -fx-transition: all 0.2s;
@@ -159,6 +171,7 @@
     -fx-background-color: #bd976d;
 }
 
+/* Text area styling */
 .text-area {
     -fx-background-color: #fff7e1;
     -fx-border-color: #bd976d;
@@ -173,6 +186,7 @@
     -fx-wrap-text: true;
 }
 
+/* Label styling */
 .label {
     -fx-font-size: 13px;
     -fx-text-fill: #ffe7b2;
@@ -180,12 +194,14 @@
     -fx-padding: 0 0 4 0;
 }
 
+/* Error label style */
 #errorLabel {
     -fx-text-fill: #bd976d;
     -fx-font-weight: bold;
     -fx-font-size: 15px;
 }
 
+/* Graph drawing pane */
 .pane {
     -fx-background-color: #18181b;
     -fx-background-radius: 24;
@@ -217,6 +233,7 @@
     -fx-transition: all 0.2s;
 }
 
+/* Hover style for action buttons */
 .action-btn:hover {
     -fx-background-color: #ffd580;
     -fx-text-fill: #23272e;
@@ -225,35 +242,33 @@
     -fx-scale-y: 1.06;
 }
 
+/* Custom scrollbar styling for text area */
 .text-area .scroll-bar:vertical {
     -fx-background-color: transparent;
     -fx-pref-width: 10px;
 }
-
 .text-area .scroll-bar:horizontal {
     -fx-background-color: transparent;
     -fx-pref-height: 10px;
 }
-
 .text-area .thumb {
     -fx-background-color: #bd976d;
     -fx-background-radius: 6;
     -fx-opacity: 0.8;
 }
-
 .text-area .thumb:hover {
     -fx-background-color: #ffe7b2;
     -fx-opacity: 1.0;
 }
-
 .text-area .track {
     -fx-background-color: #23272e;
     -fx-background-radius: 6;
 }
-
 .text-area .increment-button,
 .text-area .decrement-button {
     -fx-background-color: transparent;
     -fx-padding: 0;
-    -fx-shape: "\";
+    -fx-shape: "";
 }
+
+/* Additional utility styles and effect tweaks */
