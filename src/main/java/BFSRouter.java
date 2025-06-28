@@ -16,14 +16,12 @@ public class BFSRouter {
     public List<String> runBFS(String source, String destination) {
         logs.clear();         // Clear previous run logs
         visitedOrder.clear(); // Clear visited history
-
-        // Check if either the source or destination node doesn't exist in the graph
+        // if source and destination is missing gives log error
         if (!graph.hasNode(source) || !graph.hasNode(destination)) {
             logs.add("Invalid source or destination node.");
             return null;
         }
-
-        // If source and destination are the same, return that single node as the path
+        // When both nodes are same
         if (source.equals(destination)) {
             logs.add("Source and destination are the same.");
             visitedOrder.add(source);
@@ -31,51 +29,50 @@ public class BFSRouter {
         }
 
         logs.add("Starting BFS from: " + source);
-        Queue<String> queue = new LinkedList<>();    // for BFS traversal
-        Set<String> visited = new HashSet<>();       // to avoid revisiting nodes
+        Queue<String> queue = new LinkedList<>();// for BFS traversal
+        Set<String> visited = new HashSet<>();// to avoid revisiting nodes
         Map<String, String> parent = new HashMap<>();// to reconstruct the path later
-
         // Starts BFS
         queue.offer(source);
         visited.add(source);
-
-        // Continue traversal while there are nodes to explore
+        // when queue is not empty
         while (!queue.isEmpty()) {
-            String current = queue.poll(); // Remove and retrieve the next node to visit from the queue
-            logs.add("Visiting: " + current); // Log that we are currently visiting this node
-            visitedOrder.add(current);         // Add current node to the list showing the order of visits
+            String current = queue.poll();// takes first node to visit
+            logs.add("Dequeued: " + current);
+            logs.add("");
+            logs.add("Visiting: " + current);// logs records that currently visiting node
+            visitedOrder.add(current);// saves the order
 
-            // Loop through all neighbors (connected nodes) of the current node
-            for (String neighbor : graph.getNeighbors(current)) {
-                // Only proceed if the neighbor hasn't been visited yet
-                if (!visited.contains(neighbor)) {
-                    queue.offer(neighbor);                // Add the neighbor to the queue for future visiting
-                    visited.add(neighbor);                // Mark the neighbor as visited to avoid revisiting
-                    parent.put(neighbor, current);        // Save the parent of the neighbor to reconstruct the path later
-                    logs.add("Queueing: " + neighbor);   // Log that we are queueing this neighbor for future visit
+            if (current.equals(destination)) {
+                logs.add("");
+                logs.add("Destination reached: " + destination);
+                logs.add("");
+                // Reconstruct path
+                List<String> path = new ArrayList<>();
+                for (String at = destination; at != null; at = parent.get(at)) {
+                    path.add(at);
+                }
+                Collections.reverse(path);
+                logs.add("Shortest path: " + path);
+                return path;
+            }
 
-                    if (neighbor.equals(destination)) {
-                        logs.add("Destination reached: " + destination);
-                        break;
-                    }
+            List<String> queuedNeighbors = new ArrayList<>();
+            for (String neighbor : graph.getNeighbors(current)) {// checks each neighbour connected to the node
+                if (!visited.contains(neighbor)) {// visit neighbour
+                    queue.offer(neighbor);// add neighbour to the queue
+                    visited.add(neighbor);// marks neighbour as visited
+                    parent.put(neighbor, current);// records that neighbour was visited for building path later
+                    queuedNeighbors.add(neighbor);
                 }
             }
+            if (!queuedNeighbors.isEmpty()) {
+                logs.add("Queueing: " + String.join(", ", queuedNeighbors));
+                logs.add("");
+            }
         }
-
-        if (!parent.containsKey(destination)) {
-            logs.add("No path found from " + source + " to " + destination);
-            return null;
-        }
-
-        List<String> path = new ArrayList<>(); // Prepare a list to build the shortest path
-        // Walk backward from destination to source using the parent map to build the path
-        for (String at = destination; at != null; at = parent.get(at)) {
-            path.add(at);
-        }
-        Collections.reverse(path);
-        logs.add("Shortest path: " + path);
-
-        return path;
+        logs.add("No path found from " + source + " to " + destination);
+        return null;
     }
 
     // Returns the traversal log
