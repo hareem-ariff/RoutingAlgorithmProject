@@ -1,27 +1,32 @@
 import java.util.*;
 
+// Feature 4: Implements the BFS routing algorithm
+// Feature 8: Logs routing decisions step by step
+// Feature 9: Handles edge cases like invalid nodes, same source/destination, or no path
 public class BFSRouter {
     private final Graph graph;                   // Graph reference
-    private final List<String> logs;             // Logs of each step
-    private final List<String> visitedOrder;     // Nodes visited in order (for GUI use)
+    private final List<String> logs;             // Feature 8: Logs of each step
+    private final List<String> visitedOrder;     // Used for GUI animation (Feature 6)
 
-    // Constructor
     public BFSRouter(Graph graph) {
         this.graph = graph;
         this.logs = new ArrayList<>();
         this.visitedOrder = new ArrayList<>();
     }
 
-    // BFS traversal to find shortest path between source and destination
+    // Feature 4: BFS traversal to find shortest path
+    // Note: BFS works on unweighted graphs. It treats every edge as equal-cost.
     public List<String> runBFS(String source, String destination) {
         logs.clear();         // Clear previous run logs
         visitedOrder.clear(); // Clear visited history
-        // if source and destination is missing gives log error
+
+        // Feature 9: Edge case - invalid nodes
         if (!graph.hasNode(source) || !graph.hasNode(destination)) {
             logs.add("Invalid source or destination node.");
             return null;
         }
-        // When both nodes are same
+
+        // Feature 9: Edge case - same source and destination
         if (source.equals(destination)) {
             logs.add("Source and destination are the same.");
             visitedOrder.add(source);
@@ -29,25 +34,24 @@ public class BFSRouter {
         }
 
         logs.add("Starting BFS from: " + source);
-        Queue<String> queue = new LinkedList<>();// for BFS traversal
-        Set<String> visited = new HashSet<>();// to avoid revisiting nodes
-        Map<String, String> parent = new HashMap<>();// to reconstruct the path later
-        // Starts BFS
+        Queue<String> queue = new LinkedList<>();
+        Set<String> visited = new HashSet<>();
+        Map<String, String> parent = new HashMap<>();
+
         queue.offer(source);
         visited.add(source);
-        // when queue is not empty
+
         while (!queue.isEmpty()) {
-            String current = queue.poll();// takes first node to visit
+            String current = queue.poll();
             logs.add("Dequeued: " + current);
             logs.add("");
-            logs.add("Visiting: " + current);// logs records that currently visiting node
-            visitedOrder.add(current);// saves the order
+            logs.add("Visiting: " + current);
+            visitedOrder.add(current);
 
             if (current.equals(destination)) {
                 logs.add("");
                 logs.add("Destination reached: " + destination);
                 logs.add("");
-                // Reconstruct path
                 List<String> path = new ArrayList<>();
                 for (String at = destination; at != null; at = parent.get(at)) {
                     path.add(at);
@@ -58,11 +62,11 @@ public class BFSRouter {
             }
 
             List<String> queuedNeighbors = new ArrayList<>();
-            for (String neighbor : graph.getNeighbors(current)) {// checks each neighbour connected to the node
-                if (!visited.contains(neighbor)) {// visit neighbour
-                    queue.offer(neighbor);// add neighbour to the queue
-                    visited.add(neighbor);// marks neighbour as visited
-                    parent.put(neighbor, current);// records that neighbour was visited for building path later
+            for (String neighbor : graph.getNeighbors(current)) {
+                if (!visited.contains(neighbor)) {
+                    queue.offer(neighbor);
+                    visited.add(neighbor);
+                    parent.put(neighbor, current);
                     queuedNeighbors.add(neighbor);
                 }
             }
@@ -75,12 +79,10 @@ public class BFSRouter {
         return null;
     }
 
-    // Returns the traversal log
     public List<String> getLogs() {
         return logs;
     }
 
-    // Returns the order in which nodes were visited (for animation or step-by-step visualization)
     public List<String> getVisitedOrder() {
         return visitedOrder;
     }

@@ -1,21 +1,23 @@
 import java.util.*;
 import java.awt.Point;
 
-// Graph structure logic class
+// Feature 2: Core graph structure logic for storing nodes and edges
+// Note: BFS assumes all edges have equal weight (unweighted graph).
+// No need to store weights since BFS finds the shortest path based on hop count, not edge cost.
+// Feature 7: Allows dynamic changes in topology (add/remove nodes and edges)
 public class Graph {
     // Adjacency list to store nodes and their connections
     private final Map<String, Set<String>> adjList;
 
-    // Node positions for GUI (x, y)
+    // Node positions for GUI (x, y) - supports Feature 6: Visualization
     private final Map<String, Point> nodePositions;
 
-    // Constructor initializes the adjacency list and position map
     public Graph() {
         adjList = new HashMap<>();
         nodePositions = new HashMap<>();
     }
 
-    // Add a node to the graph if it doesn't already exist
+    // Feature 2 + 7: Add a node to the graph
     public void addNode(String node) {
         if (node == null || node.trim().isEmpty()) {
             System.out.println("Invalid node name.");
@@ -24,7 +26,7 @@ public class Graph {
         adjList.putIfAbsent(node.trim(), new HashSet<>());
     }
 
-    // Remove a node and all edges connected to it
+    // Feature 7: Remove a node and its edges
     public void removeNode(String node) {
         if (!adjList.containsKey(node)) {
             System.out.println("Node does not exist.");
@@ -37,7 +39,7 @@ public class Graph {
         }
     }
 
-    // Add an undirected edge between two existing nodes
+    // Feature 2 + 7: Add an undirected edge between two nodes
     public void addEdge(String from, String to) {
         if (from == null || to == null || from.equals(to)) {
             System.out.println("Invalid edge.");
@@ -51,7 +53,7 @@ public class Graph {
         adjList.get(to).add(from);
     }
 
-    // Remove an edge between two nodes if it exists
+    // Feature 7: Remove an edge between two nodes
     public void removeEdge(String from, String to) {
         if (!adjList.containsKey(from) || !adjList.containsKey(to)) {
             System.out.println("One or both nodes do not exist.");
@@ -61,28 +63,28 @@ public class Graph {
         adjList.get(to).remove(from);
     }
 
-    // Return the neighbors of a given node
+    // Helper: Return neighbors of a node
     public Set<String> getNeighbors(String node) {
         return adjList.getOrDefault(node, Collections.emptySet());
     }
 
-    // Check if a node exists in the graph
+    // Helper: Check node existence
     public boolean hasNode(String node) {
         return adjList.containsKey(node);
     }
 
-    // Return all nodes in the graph
+    // Helper: Return all nodes
     public Set<String> getAllNodes() {
         return adjList.keySet();
     }
 
-    // Check if two nodes are directly connected
+    // Helper: Check if nodes are directly connected
     public boolean isConnected(String from, String to) {
         if (!adjList.containsKey(from)) return false;
         return adjList.get(from).contains(to);
     }
 
-    // Return all edges in the graph as a list of string pairs
+    // Helper: Return all edges
     public List<String[]> getAllEdges() {
         List<String[]> edges = new ArrayList<>();
         Set<String> visited = new HashSet<>();
@@ -99,24 +101,24 @@ public class Graph {
         return edges;
     }
 
-    // Set the (x, y) position for a node
+    // Feature 6: Store node positions for GUI visualization
     public void setNodePosition(String node, int x, int y) {
         if (hasNode(node)) {
             nodePositions.put(node, new Point(x, y));
         }
     }
 
-    // Get the (x, y) position of a node
+    // Feature 6: Get node position
     public Point getNodePosition(String node) {
         return nodePositions.get(node);
     }
 
-    // Get total number of nodes
+    // Helper: Total number of nodes
     public int getNodeCount() {
         return adjList.size();
     }
 
-    // Return a string representation of the graph structure
+    // Helper: Graph structure as string (useful for testing/debugging)
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -126,41 +128,3 @@ public class Graph {
         return sb.toString();
     }
 }
-
-// main method for testing only can be removed or ignored for GUI/BFS integration
-/*
-public static void main(String[] args) {
-    Graph g = new Graph();
-
-    // Sample nodes
-    g.addNode("A");
-    g.addNode("B");
-    g.addNode("C");
-    g.addNode(""); // Invalid node
-    g.addNode(null); // Invalid node
-
-    // Sample edges
-    g.addEdge("A", "B");
-    g.addEdge("A", "C");
-    g.addEdge("A", "A"); // Invalid edge
-    g.addEdge("A", "Z"); // Invalid edge (Z doesn't exist)
-
-    // Display current graph
-    System.out.println("Graph structure:");
-    System.out.println(g);
-
-    // Utility checks
-    System.out.println("Contains node 'B'? " + g.hasNode("B"));
-    System.out.println("All nodes: " + g.getAllNodes());
-    System.out.println("A connected to B? " + g.isConnected("A", "B"));
-
-    // Remove edge and node
-    g.removeEdge("A", "B");
-    g.removeNode("C");
-    g.removeNode("Z"); // Invalid remove
-
-    // Display updated graph
-    System.out.println("\nUpdated graph:");
-    System.out.println(g);
-}
-*/
