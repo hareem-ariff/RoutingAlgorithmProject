@@ -71,3 +71,13 @@ A modern, interactive JavaFX application to visualize Breadth-First Search (BFS)
 ---
 
 
+## 👥 Contributors
+
+| Name            | Role                                                                 |
+|-----------------|----------------------------------------------------------------------|
+| Hareem Arif     | Designed and implemented `GraphBFSApp.java`, and styled the UI using `graphbfsapp.css` |
+| Mohammad Taha   | Implemented the BFS routing algorithm logic in `BFSRouter.java`       |
+| Laiba Asad      | Developed the core graph data structure and methods in `Graph.java`   |
+
+
+
